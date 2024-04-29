@@ -34,27 +34,28 @@ class Character(Base):
     homeworld_id = Column(Integer, ForeignKey('homeworld.id'))
     homeworld = relationship(Planet)
 
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(30))
+    password = Column(String(30))
+
 class FavoritePlanets(Base):
     __tablename__ = 'favorite_planets'
     id = Column(Integer, primary_key=True)
     planet_id = Column(Integer, ForeignKey('planet.id'))
     planet = relationship(Planet)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
     
 class FavoriteCharacters(Base):
     __tablename__ = 'favorite_characters'
     id = Column(Integer, primary_key=True)
     character_id = Column(Integer, ForeignKey('character.id'))
     character = relationship(Character)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
-class User(Base):
-    __tablename__ = 'user'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(30))
-    password = Column(String(30))
-    favorite_planets_id = Column(Integer, ForeignKey('favorite_planets.id'))
-    favorite_planets = relationship(FavoritePlanets)
-    favorite_characters_id = Column(Integer, ForeignKey('favorite_characters.id'))
-    favorite_characters = relationship(FavoriteCharacters)
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
